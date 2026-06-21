@@ -1,0 +1,6 @@
+# Phase 1: conservative default. Disallow all crawling/indexing.
+# This is revisited in Phase 9 once admin/sensitive routes exist, so that
+# truly public informational pages (e.g. /about, /disclaimer) can be
+# safely allowed while app/admin routes remain disallowed.
+User-agent: *
+Disallow: /

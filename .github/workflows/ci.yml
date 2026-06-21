@@ -1,0 +1,53 @@
+name: CI
+
+# Phase 1 status: this workflow uses `npm install` rather than `npm ci`
+# because no package-lock.json has been committed yet (it must be
+# generated locally/in Codespaces by running `npm install`, since the
+# sandbox that authored this repo had no network access to the npm
+# registry). ONCE package-lock.json IS COMMITTED, change `npm install`
+# below to `npm ci` for reproducible, faster CI installs — npm ci refuses
+# to run without a lockfile, so this is a required follow-up, not optional
+# polish.
+#
+# test:e2e (Playwright) is intentionally not run in CI yet — it is wired
+# in starting Phase 8 once there is a real UI flow to test end-to-end.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install # TODO(Phase 2+): switch to `npm ci` once package-lock.json is committed
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit & integration tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Phase 1 build does not require real secrets. DISABLE_LLM=true
+          # and an empty/placeholder DATABASE_URL are sufficient because
+          # no route in Phase 1 connects to a database or LLM provider.
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          DISABLE_LLM: "true"

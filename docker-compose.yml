@@ -1,0 +1,46 @@
+# Gene Prioritizer AI — local Docker Compose stack
+#
+# Phase 1 scope: the `app` service builds and runs the Next.js shell.
+# The `db` (PostgreSQL) service is included now, ahead of Phase 2's
+# Prisma schema, so that DATABASE_URL wiring and the overall compose
+# topology are stable before models are added. Until Phase 2 lands,
+# the app does not actually connect to `db` for anything.
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/gene_prioritizer
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      DISABLE_LLM: "true"
+      RATE_LIMIT_ENABLED: "true"
+      GENE_CARDS_LINKOUT_ENABLED: "true"
+      GENE_CARDS_LICENSED_IMPORT_ENABLED: "false"
+      LOG_LEVEL: info
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gene_prioritizer
+    ports:
+      - "5432:5432"
+    volumes:
+      - gene_prioritizer_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  gene_prioritizer_db_data:

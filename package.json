@@ -1,0 +1,52 @@
+{
+  "name": "gene-prioritizer-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Research/education gene-prioritization decision-support tool. Not a diagnostic device.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "echo \"[phase-1] Playwright e2e suite is not implemented until Phase 8. This script is a placeholder so CI wiring is stable; it intentionally exits 0.\" && exit 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "echo \"[phase-1] Prisma is introduced in Phase 2. Placeholder no-op.\" && exit 0",
+    "db:migrate": "echo \"[phase-1] Prisma is introduced in Phase 2. Placeholder no-op.\" && exit 0",
+    "db:studio": "echo \"[phase-1] Prisma is introduced in Phase 2. Placeholder no-op.\" && exit 0",
+    "data:download-hpo": "echo \"[phase-1] HPO ingestion is introduced in Phase 3. Placeholder no-op.\" && exit 0",
+    "data:build-hpo": "echo \"[phase-1] HPO ingestion is introduced in Phase 3. Placeholder no-op.\" && exit 0",
+    "data:seed": "echo \"[phase-1] Seed data is introduced in Phase 2. Placeholder no-op.\" && exit 0",
+    "setup": "npm install && npm run db:generate && npm run data:download-hpo && npm run data:build-hpo && npm run data:seed"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.1.0",
+    "@tailwindcss/typography": "0.5.13",
+    "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "@vitejs/plugin-react": "4.3.1",
+    "autoprefixer": "10.4.19",
+    "eslint": "8.57.0",
+    "eslint-config-next": "14.2.5",
+    "postcss": "8.4.39",
+    "prettier": "3.3.2",
+    "prettier-plugin-tailwindcss": "0.6.5",
+    "tailwindcss": "3.4.4",
+    "typescript": "5.5.3",
+    "typescript-eslint": "^8.61.1",
+    "vitest": "1.6.0"
+  }
+}
